@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate AI — Profile &amp; Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/product.css?v=4">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body class="dashboard-body accent-amber">
+<div class="dashboard-shell">
+
+  <button class="sidebar-backdrop" type="button" data-sidebar-close aria-label="Close navigation"></button>
+
+  <!-- ── Sidebar ── -->
+  <aside class="dashboard-sidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+      <div class="sidebar-top">
+        <a class="brand-lockup" href="/app/dashboard">
+          <span class="brand-badge" aria-hidden="true">S</span>
+          <div><span>StudyMate AI</span><span class="brand-name-sub">Premium Learner</span></div>
+        </a>
+        <button class="sidebar-close-btn" type="button" data-sidebar-close aria-label="Close navigation">&times;</button>
+      </div>
+    </div>
+    <div class="sidebar-new-summary">
+      <button class="btn-new-summary" onclick="window.location.href='/app/summarizer'" aria-label="Start a new summary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Summary
+      </button>
+    </div>
+    <div class="sidebar-nav-section">
+      <nav class="sidebar-nav" aria-label="App navigation">
+        <a href="/app/dashboard" aria-label="Dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
+        <a href="/app/summarizer" aria-label="Summarizer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h10"/></svg>Summarizer</a>
+        <a href="/app/explainer" aria-label="Explainer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Explainer</a>
+        <a href="/app/audio" aria-label="Audio"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>Audio</a>
+        <a href="/app/quiz" aria-label="Quiz"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Quiz</a>
+        <a href="/app/slides" aria-label="Slides"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Slides</a>
+        <a href="/app/saved" aria-label="Saved Notes"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Saved Notes</a>
+        <a class="active" href="/app/profile" aria-current="page" aria-label="Profile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+      </nav>
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-user-avatar" aria-hidden="true">S</div>
+      <div class="sidebar-user-info">
+        <span class="sidebar-user-name">StudyMate User</span>
+        <span class="sidebar-user-role">Premium Learner</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Top Bar ── -->
+  <header class="app-topbar">
+    <div class="app-topbar-left">
+      <button class="btn btn-ghost sidebar-toggle-btn" type="button" data-sidebar-open aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+      <span class="app-topbar-title">Profile &amp; Settings</span>
+    </div>
+    <div class="app-topbar-right">
+      <span id="authState" class="status-badge" aria-live="polite">Account</span>
+      <a class="settings-entry" href="/app/profile" aria-label="Profile settings" title="Profile">&#9881;</a>
+      <button id="logoutBtn" class="btn btn-ghost" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <!-- ── Main: Profile & Settings ── -->
+  <main class="dashboard-main" aria-label="Profile and settings workspace">
+
+    <!-- Profile Hero -->
+    <div class="profile-hero">
+      <div class="profile-avatar" id="profileAvatar" aria-label="Profile avatar initial">S</div>
+      <div class="profile-hero-info">
+        <h2 id="profileName">StudyMate User</h2>
+        <p id="profileEmail" class="panel-copy">Loading account details…</p>
+      </div>
+    </div>
+
+    <!-- Personal Information -->
+    <div class="panel-card">
+      <div class="panel-head">
+        <h2>Personal Information</h2>
+      </div>
+      <div class="settings-grid">
+        <label class="settings-field">
+          <span>Full Name</span>
+          <input type="text" id="editName" class="auth-input" placeholder="Your full name" autocomplete="name" aria-label="Full Name">
+        </label>
+        <label class="settings-field">
+          <span>Email</span>
+          <input type="email" id="editEmail" class="auth-input" placeholder="Your email address" autocomplete="email" aria-label="Email address">
+        </label>
+      </div>
+      <div class="action-row" style="margin-top:16px;">
+        <button id="updateProfileBtn" class="btn btn-primary" type="button">Update Profile</button>
+      </div>
+    </div>
+
+    <!-- Subscription Card -->
+    <div class="subscription-card panel-card">
+      <div class="subscription-header">
+        <h2>Subscription</h2>
+        <span class="subscription-badge" aria-label="Premium subscription">Premium</span>
+      </div>
+      <p class="panel-copy">You have full access to all StudyMate AI tools — Summarizer, Explainer, Quiz, Slides, Audio, and Saved Notes. Your workspace is private, synced, and powered by the latest AI models.</p>
+    </div>
+
+    <!-- Learning Preferences -->
+    <div class="panel-card">
+      <div class="panel-head">
+        <h2>Learning Preferences</h2>
+      </div>
+      <div class="settings-grid">
+        <label class="settings-field">
+          <span>Usage Mode</span>
+          <select id="personaSelect" class="auth-input" aria-label="Usage mode">
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="tutor">Tutor</option>
+            <option value="self-learner">Self-Learner</option>
+          </select>
+        </label>
+        <label class="settings-field">
+          <span>Summary Length</span>
+          <select id="summaryLengthSelect" class="auth-input" aria-label="Summary length">
+            <option value="concise">Concise</option>
+            <option value="balanced" selected>Balanced</option>
+            <option value="detailed">Detailed</option>
+          </select>
+        </label>
+        <label class="settings-field">
+          <span>Explanation Style</span>
+          <select id="explanationStyleSelect" class="auth-input" aria-label="Explanation style">
+            <option value="simple">Simple</option>
+            <option value="standard" selected>Standard</option>
+            <option value="technical">Technical</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <!-- Voice Selection -->
+    <div class="panel-card">
+      <div class="panel-head">
+        <h2>Voice Selection</h2>
+      </div>
+      <div class="settings-grid">
+        <label class="settings-field">
+          <span>TTS Voice</span>
+          <select id="voiceSelect" class="auth-input" aria-label="Text-to-speech voice">
+            <!-- Populated by dashboard.js via SpeechSynthesis API -->
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <!-- Action Row -->
+    <div class="action-row">
+      <button id="savePrefsBtn" class="btn btn-primary" type="button">Save Preferences</button>
+      <button id="resetPrefsBtn" class="btn btn-ghost" type="button">Reset to defaults</button>
+      <div id="prefsFeedback" class="prefs-feedback" role="status" aria-live="polite" style="display:none;">Preferences saved!</div>
+    </div>
+
+  </main>
+
+  <input type="hidden" id="noteTitle" value="">
+  <div id="feedback" class="global-feedback" style="display:none;" role="status" aria-live="polite"></div>
+  <div id="spinner" class="global-spinner" style="display:none;" role="status" aria-live="polite" aria-label="Loading">
+    <div class="spinner-ring" aria-hidden="true"></div>
+    <div id="spinnerStatus" class="spinner-status">Loading…</div>
+  </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmMXJfuqCWAFMD4pkxEFoNmMCBH" crossorigin="anonymous"></script>
+<script src="/static/dashboard.js"></script>
+</body>
+</html>

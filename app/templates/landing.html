@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate AI — Welcome</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/product.css?v=4">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body class="landing-body accent-amber">
+
+  <!-- ── Navigation ── -->
+  <nav class="product-nav product-nav-education" aria-label="Main navigation">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 24px;max-width:1440px;margin:0 auto;">
+      <a class="brand-lockup" href="/">
+        <span class="brand-badge" aria-hidden="true">S</span>
+        <div>
+          <span>StudyMate AI</span>
+          <span class="brand-name-sub">Premium Learner</span>
+        </div>
+      </a>
+      <div class="nav-actions" id="navActions">
+        <a class="nav-link-inline" href="/">Home</a>
+        <a class="nav-link-inline" href="/courses">Courses</a>
+        <a class="nav-link-inline" href="/teachers">Teachers</a>
+        <a class="nav-link-inline" href="/personalize">Personalize</a>
+        <button class="btn btn-ghost" id="loginNavBtn" data-bs-toggle="modal" data-bs-target="#authModal" data-auth-view="login" aria-haspopup="dialog">Login</button>
+        <button class="btn btn-primary" id="registerNavBtn" data-bs-toggle="modal" data-bs-target="#authModal" data-auth-view="register" aria-haspopup="dialog">Get Started</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Onboarding Welcome ── -->
+  <main class="onboarding-page" aria-labelledby="onboardingHeading">
+    <div class="onboarding-card panel-card" style="max-width:480px;width:100%;text-align:center;">
+      <div style="display:flex;justify-content:center;margin-bottom:24px;">
+        <span class="brand-badge" style="width:56px;height:56px;font-size:1.4rem;" aria-hidden="true">S</span>
+      </div>
+      <h1 id="onboardingHeading" style="font-size:clamp(1.8rem,4vw,2.4rem);letter-spacing:-0.03em;margin-bottom:16px;">Your Academic Edge</h1>
+      <p class="hero-description" style="margin-bottom:32px;font-size:1rem;line-height:1.75;">
+        Welcome to StudyMate AI. Your personalized learning companion powered by AI — turn notes into summaries, quizzes, slides, and more.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:stretch;">
+        <a class="btn btn-primary" href="/personalize" style="padding:14px 28px;font-size:1rem;">Get Started</a>
+        <a class="btn btn-ghost" href="/" style="padding:14px 28px;font-size:1rem;">Back to Home</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Auth Modal ── -->
+  <div id="authModal" class="auth-modal-overlay" role="dialog" aria-modal="true" aria-label="Sign in or create account" style="display:none;position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+    <div class="auth-shell" style="max-width:860px;width:100%;border-radius:16px;overflow:hidden;position:relative;">
+      <button id="modalCloseBtn" style="position:absolute;top:14px;right:16px;background:transparent;border:none;color:var(--on-surface-muted);font-size:1.4rem;cursor:pointer;z-index:1;line-height:1;" aria-label="Close">&times;</button>
+      <!-- Side panel -->
+      <div class="auth-side">
+        <div>
+          <span class="eyebrow-pill">StudyMate AI</span>
+          <h2 style="margin-top:12px;">One workspace for notes, revision, and teaching.</h2>
+          <p style="margin-top:8px;">Login to continue your sessions or create a free account to get started.</p>
+        </div>
+        <div class="auth-side-list">
+          <div><strong>Summaries</strong><span>Structure long notes quickly.</span></div>
+          <div><strong>Explanations</strong><span>Switch between depth levels.</span></div>
+          <div><strong>Quiz + Slides</strong><span>Reuse content for different goals.</span></div>
+        </div>
+      </div>
+      <!-- Main panel -->
+      <div class="auth-main">
+        <div class="auth-tabs">
+          <button id="loginTabBtn" class="auth-tab active" type="button">Log in</button>
+          <button id="registerTabBtn" class="auth-tab" type="button">Sign up</button>
+        </div>
+        <!-- Login -->
+        <section id="loginPanel" class="auth-panel active">
+          <h3 class="auth-panel-title">Welcome back</h3>
+          <p class="auth-copy">Use your email and password to continue.</p>
+          <form id="loginForm" class="auth-form" novalidate>
+            <label class="auth-field">
+              <span>Email</span>
+              <input class="auth-input" type="email" name="email" placeholder="name@example.com" required autocomplete="email">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <label class="auth-field">
+              <span>Password</span>
+              <input class="auth-input" type="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <button class="btn btn-primary" type="submit" style="width:100%;">Continue</button>
+          </form>
+          <div id="loginFeedback" class="small-feedback" role="alert"></div>
+        </section>
+        <!-- Register -->
+        <section id="registerPanel" class="auth-panel">
+          <h3 class="auth-panel-title">Create your account</h3>
+          <p class="auth-copy">Choose how you plan to use StudyMate and start with the right setup.</p>
+          <form id="registerForm" class="auth-form" novalidate>
+            <label class="auth-field">
+              <span>Full name</span>
+              <input class="auth-input" type="text" name="full_name" placeholder="Your full name" required autocomplete="name">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <label class="auth-field">
+              <span>Email</span>
+              <input class="auth-input" type="email" name="email" placeholder="name@example.com" required autocomplete="email">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <label class="auth-field">
+              <span>Password</span>
+              <input class="auth-input" type="password" name="password" placeholder="Create a password (min 6 chars)" required autocomplete="new-password" minlength="6">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <label class="auth-field">
+              <span>I'm primarily a…</span>
+              <select class="auth-input" name="persona" id="registerPersona">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+                <option value="tutor">Tutor</option>
+                <option value="self-learner">Self-Learner</option>
+              </select>
+            </label>
+            <button class="btn btn-primary" type="submit" style="width:100%;">Create account</button>
+          </form>
+          <div id="registerFeedback" class="small-feedback" role="alert"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/landing.js"></script>
+</body>
+</html>

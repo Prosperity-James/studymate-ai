@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate AI — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/product.css?v=4">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body class="dashboard-body accent-amber">
+<div class="dashboard-shell">
+
+  <!-- Sidebar backdrop (mobile) -->
+  <button class="sidebar-backdrop" type="button" data-sidebar-close aria-label="Close navigation"></button>
+
+  <!-- ── Sidebar ── -->
+  <aside class="dashboard-sidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+      <div class="sidebar-top">
+        <a class="brand-lockup" href="/app/dashboard">
+          <span class="brand-badge" aria-hidden="true">S</span>
+          <div>
+            <span>StudyMate AI</span>
+            <span class="brand-name-sub">Premium Learner</span>
+          </div>
+        </a>
+        <button class="sidebar-close-btn" type="button" data-sidebar-close aria-label="Close navigation">&times;</button>
+      </div>
+    </div>
+    <div class="sidebar-new-summary">
+      <button class="btn-new-summary" onclick="window.location.href='/app/summarizer'" aria-label="Start a new summary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Summary
+      </button>
+    </div>
+    <div class="sidebar-nav-section">
+      <nav class="sidebar-nav" aria-label="App navigation">
+        <a class="active" href="/app/dashboard" aria-current="page">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a>
+        <a href="/app/summarizer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h10"/></svg>
+          Summarizer
+        </a>
+        <a href="/app/explainer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          Explainer
+        </a>
+        <a href="/app/audio">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+          Audio
+        </a>
+        <a href="/app/quiz">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Quiz
+        </a>
+        <a href="/app/slides">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Slides
+        </a>
+        <a href="/app/saved">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Saved Notes
+        </a>
+        <a href="/app/profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
+        </a>
+      </nav>
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-user-avatar" id="profileAvatar" aria-hidden="true">S</div>
+      <div class="sidebar-user-info">
+        <span class="sidebar-user-name" id="profileName">StudyMate User</span>
+        <span class="sidebar-user-role">Premium Learner</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Top Bar ── -->
+  <header class="app-topbar">
+    <div class="app-topbar-left">
+      <button class="btn btn-ghost sidebar-toggle-btn" type="button" data-sidebar-open aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+      <span class="app-topbar-title">StudyMate AI</span>
+    </div>
+    <div class="app-topbar-right">
+      <span id="authState" class="status-badge" aria-live="polite">Account</span>
+      <a class="settings-entry" href="/app/profile" aria-label="Profile settings" title="Profile">&#9881;</a>
+      <button id="logoutBtn" class="btn btn-ghost" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <!-- ── Chat Main ── -->
+  <main class="chat-main" aria-label="Study workspace">
+
+    <div class="chat-messages" id="chatMessages">
+      <!-- Welcome state (hidden after first message) -->
+      <div class="chat-welcome" id="chatWelcome">
+        <div class="chat-welcome-icon">
+          <span class="brand-badge" style="width:60px;height:60px;font-size:1.5rem;border-radius:18px;" aria-hidden="true">S</span>
+        </div>
+        <h2>What would you like to study today?</h2>
+        <p class="panel-copy">Paste your notes or upload a file, then pick a tool below.</p>
+        <div class="chat-tool-pills" role="group" aria-label="Select study tool">
+          <button class="tool-pill active" data-tool="summarize" aria-pressed="true">Summarize</button>
+          <button class="tool-pill" data-tool="explain" aria-pressed="false">Explain</button>
+          <button class="tool-pill" data-tool="quiz" aria-pressed="false">Quiz</button>
+          <button class="tool-pill" data-tool="slides" aria-pressed="false">Slides</button>
+          <button class="tool-pill" data-tool="ask" aria-pressed="false">Ask a Question</button>
+        </div>
+      </div>
+
+      <!-- Recent Sessions -->
+      <div class="recent-sessions" id="recentSessions">
+        <h3>Recent Sessions</h3>
+        <div class="sessions-grid" id="sessionsGrid">
+          <p class="empty-copy" id="sessionsEmpty" style="display:none;">No saved sessions yet.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Composer ── -->
+    <div class="chat-composer-wrap">
+      <div class="chat-tool-bar" role="group" aria-label="Select study tool">
+        <button class="tool-pill active" data-tool="summarize" aria-pressed="true">Summarize</button>
+        <button class="tool-pill" data-tool="explain" aria-pressed="false">Explain</button>
+        <button class="tool-pill" data-tool="quiz" aria-pressed="false">Quiz</button>
+        <button class="tool-pill" data-tool="slides" aria-pressed="false">Slides</button>
+        <button class="tool-pill" data-tool="ask" aria-pressed="false">Ask a Question</button>
+        <div class="level-switcher" id="levelSwitcher" style="margin-left:auto;display:none;" role="group" aria-label="Explanation depth">
+          <button class="level-btn active" data-level="basic" aria-pressed="true">Basic</button>
+          <button class="level-btn" data-level="intermediate" aria-pressed="false">Intermediate</button>
+          <button class="level-btn" data-level="advanced" aria-pressed="false">Advanced</button>
+        </div>
+      </div>
+      <div class="chat-composer">
+        <div class="attach-wrap" id="attachWrap">
+          <button class="chat-upload-btn" id="attachBtn" type="button" title="Attach" aria-label="Attach file or option" aria-expanded="false" aria-haspopup="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          </button>
+          <div class="attach-menu" id="attachMenu" role="menu" aria-hidden="true" aria-label="Attach options">
+            <button class="attach-item" id="attachFileBtn" role="menuitem">
+              <span class="attach-icon" aria-hidden="true">📄</span>
+              <div><strong>Upload file</strong><span>PDF, DOCX, PPTX, TXT and more</span></div>
+            </button>
+            <button class="attach-item" id="attachAudioBtn" role="menuitem">
+              <span class="attach-icon" aria-hidden="true">🎧</span>
+              <div><strong>Listen to notes</strong><span>Read your current text aloud</span></div>
+            </button>
+            <button class="attach-item" id="attachPasteBtn" role="menuitem">
+              <span class="attach-icon" aria-hidden="true">📋</span>
+              <div><strong>Paste from clipboard</strong><span>Paste copied text directly</span></div>
+            </button>
+            <button class="attach-item" id="attachClearBtn" role="menuitem">
+              <span class="attach-icon" aria-hidden="true">🗑️</span>
+              <div><strong>Clear workspace</strong><span>Remove current text and file</span></div>
+            </button>
+          </div>
+        </div>
+        <input id="fileInput" type="file" accept="*/*" style="display:none;" aria-label="Upload file">
+        <textarea id="noteText" class="chat-input" placeholder="Paste your notes, ask a question, or use + to upload a file…" rows="1" aria-label="Study notes input" aria-multiline="true"></textarea>
+        <button class="chat-send-btn" id="sendBtn" type="button" aria-label="Send to AI">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="chat-composer-meta">
+        <span id="selectedFileName" class="meta-pill" style="display:none;" aria-live="polite"></span>
+        <span class="meta-pill">Words: <strong id="wordCount">0</strong></span>
+        <button id="saveBtn" class="btn btn-ghost" style="padding:5px 14px;font-size:0.8rem;margin-left:auto;">Save session</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Hidden sync elements used by dashboard.js -->
+  <ul id="summaryResults" style="display:none;" aria-hidden="true"></ul>
+  <div id="explanationResults" style="display:none;" aria-hidden="true"></div>
+  <div id="keywordResults" style="display:none;" aria-hidden="true"></div>
+  <input type="hidden" id="noteTitle" value="">
+
+  <!-- Global feedback & spinner -->
+  <div id="feedback" class="global-feedback" style="display:none;" role="status" aria-live="polite"></div>
+  <div id="spinner" class="global-spinner" style="display:none;" role="status" aria-live="polite" aria-label="Loading">
+    <div class="spinner-ring" aria-hidden="true"></div>
+    <div id="spinnerStatus" class="spinner-status">Working on it…</div>
+  </div>
+
+</div>
+<script src="/static/dashboard.js"></script>
+</body>
+</html>

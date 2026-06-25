@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courses — StudyMate AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/product.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body class="landing-body accent-amber">
+
+  <!-- ── Navigation ── -->
+  <nav class="product-nav product-nav-education" aria-label="Main navigation">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 24px;max-width:1440px;margin:0 auto;">
+      <a class="brand-lockup" href="/">
+        <span class="brand-badge" aria-hidden="true">S</span>
+        <div>
+          <span>StudyMate AI</span>
+          <span class="brand-name-sub">Premium Learner</span>
+        </div>
+      </a>
+      <div class="nav-actions" id="navActions">
+        <a class="nav-link-inline" href="/">Home</a>
+        <a class="nav-link-inline" href="/courses">Courses</a>
+        <a class="nav-link-inline" href="/teachers">Teachers</a>
+        <a class="nav-link-inline" href="/personalize">Personalize</a>
+        <button class="btn btn-ghost" id="loginNavBtn" aria-haspopup="dialog">Login</button>
+        <button class="btn btn-primary" id="registerNavBtn" aria-haspopup="dialog">Get Started</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Main Content ── -->
+  <main>
+
+    <!-- Page Hero -->
+    <section style="padding:72px 24px 48px;text-align:center;max-width:1440px;margin:0 auto;" aria-labelledby="coursesHeading">
+      <span class="section-tag">Courses</span>
+      <h1 id="coursesHeading" style="font-size:clamp(2rem,4vw,3rem);letter-spacing:-0.03em;margin:12px auto 16px;max-width:720px;line-height:1.15;">Explore the StudyMate AI learning toolkit</h1>
+      <p style="max-width:560px;margin:0 auto;color:var(--on-surface-muted);font-size:1rem;line-height:1.8;">Each course covers a different stage of the academic journey. Use AI-powered tools to deepen understanding, prepare smarter, and study more effectively.</p>
+    </section>
+
+    <!-- Course Cards Grid -->
+    <section style="padding:0 24px 80px;max-width:1440px;margin:0 auto;" aria-labelledby="coursesHeading">
+      <div class="feature-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));">
+
+        <article class="feature-card reveal-up">
+          <div style="font-size:1.5rem;margin-bottom:12px;" aria-hidden="true">🤖</div>
+          <h3>Introduction to AI</h3>
+          <p>Learn the fundamentals of artificial intelligence and machine learning. Understand how modern AI tools work and how to apply them effectively in your studies.</p>
+        </article>
+
+        <article class="feature-card reveal-up">
+          <div style="font-size:1.5rem;margin-bottom:12px;" aria-hidden="true">🧠</div>
+          <h3>Study Methods &amp; Productivity</h3>
+          <p>Science-backed techniques for effective learning. Discover spaced repetition, active recall, and focus strategies that maximise retention and reduce wasted time.</p>
+        </article>
+
+        <article class="feature-card reveal-up">
+          <div style="font-size:1.5rem;margin-bottom:12px;" aria-hidden="true">✍️</div>
+          <h3>Academic Writing</h3>
+          <p>Master the art of clear, structured academic communication. From essay planning to citation and argument building, develop writing skills that stand out.</p>
+        </article>
+
+        <article class="feature-card reveal-up">
+          <div style="font-size:1.5rem;margin-bottom:12px;" aria-hidden="true">🔍</div>
+          <h3>Critical Thinking</h3>
+          <p>Develop analytical reasoning and problem-solving skills. Learn to evaluate arguments, identify logical fallacies, and form well-supported conclusions.</p>
+        </article>
+
+        <article class="feature-card reveal-up">
+          <div style="font-size:1.5rem;margin-bottom:12px;" aria-hidden="true">📚</div>
+          <h3>Research Fundamentals</h3>
+          <p>Learn to find, evaluate, and synthesise academic sources. Build a research workflow that produces credible, well-documented work every time.</p>
+        </article>
+
+        <article class="feature-card reveal-up">
+          <div style="font-size:1.5rem;margin-bottom:12px;" aria-hidden="true">🎯</div>
+          <h3>Exam Preparation</h3>
+          <p>Strategic approaches to preparing for high-stakes assessments. Use AI-generated quizzes, summaries, and revision plans to go into exams with confidence.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CTA Strip -->
+    <section style="padding:56px 24px;background:var(--surface-container-low);border-top:1px solid var(--outline);border-bottom:1px solid var(--outline);" aria-label="Get started call to action">
+      <div style="max-width:640px;margin:0 auto;text-align:center;">
+        <h2 style="font-size:clamp(1.4rem,2.5vw,2rem);letter-spacing:-0.02em;margin-bottom:12px;">Ready to start learning?</h2>
+        <p style="color:var(--on-surface-muted);margin-bottom:28px;line-height:1.7;">Create a free account and access all six AI-powered study tools from one workspace — no switching apps required.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-primary" id="coursesRegisterBtn" style="padding:12px 28px;" aria-haspopup="dialog">Create Free Account</button>
+          <a class="btn btn-ghost" href="/app/dashboard" style="padding:12px 28px;">Open Dashboard</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer style="border-top:1px solid var(--outline);padding:24px;">
+    <div style="max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <span class="brand-lockup" style="font-size:0.9rem;">
+        <span class="brand-badge" style="width:28px;height:28px;font-size:0.75rem;" aria-hidden="true">S</span>
+        <span>StudyMate AI</span>
+      </span>
+      <span style="color:var(--on-surface-muted);font-size:0.82rem;">© 2024 StudyMate AI. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- ── Auth Modal ── -->
+  <div id="authModal" class="auth-modal-overlay" role="dialog" aria-modal="true" aria-label="Sign in or create account" style="display:none;position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+    <div class="auth-shell" style="max-width:860px;width:100%;border-radius:16px;overflow:hidden;position:relative;">
+      <button id="modalCloseBtn" style="position:absolute;top:14px;right:16px;background:transparent;border:none;color:var(--on-surface-muted);font-size:1.4rem;cursor:pointer;z-index:1;line-height:1;" aria-label="Close">&times;</button>
+      <!-- Side panel -->
+      <div class="auth-side">
+        <div>
+          <span class="eyebrow-pill">StudyMate AI</span>
+          <h2 style="margin-top:12px;">One workspace for notes, revision, and teaching.</h2>
+          <p style="margin-top:8px;">Login to continue your sessions or create a free account to get started.</p>
+        </div>
+        <div class="auth-side-list">
+          <div><strong>Summaries</strong><span>Structure long notes quickly.</span></div>
+          <div><strong>Explanations</strong><span>Switch between depth levels.</span></div>
+          <div><strong>Quiz + Slides</strong><span>Reuse content for different goals.</span></div>
+        </div>
+      </div>
+      <!-- Main panel -->
+      <div class="auth-main">
+        <div class="auth-tabs">
+          <button id="loginTabBtn" class="auth-tab active" type="button">Log in</button>
+          <button id="registerTabBtn" class="auth-tab" type="button">Sign up</button>
+        </div>
+        <!-- Login -->
+        <section id="loginPanel" class="auth-panel active">
+          <h3 class="auth-panel-title">Welcome back</h3>
+          <p class="auth-copy">Use your email and password to continue.</p>
+          <form id="loginForm" class="auth-form" novalidate>
+            <label class="auth-field">
+              <span>Email</span>
+              <input class="auth-input" type="email" name="email" placeholder="name@example.com" required autocomplete="email">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <label class="auth-field">
+              <span>Password</span>
+              <input class="auth-input" type="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <button class="btn btn-primary" type="submit" style="width:100%;">Continue</button>
+          </form>
+          <div id="loginFeedback" class="small-feedback" role="alert"></div>
+        </section>
+        <!-- Register -->
+        <section id="registerPanel" class="auth-panel">
+          <h3 class="auth-panel-title">Create your account</h3>
+          <p class="auth-copy">Choose how you plan to use StudyMate and start with the right setup.</p>
+          <form id="registerForm" class="auth-form" novalidate>
+            <label class="auth-field">
+              <span>Full name</span>
+              <input class="auth-input" type="text" name="full_name" placeholder="Your full name" required autocomplete="name">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <label class="auth-field">
+              <span>Email</span>
+              <input class="auth-input" type="email" name="email" placeholder="name@example.com" required autocomplete="email">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <label class="auth-field">
+              <span>Password</span>
+              <input class="auth-input" type="password" name="password" placeholder="Create a password (min 6 chars)" required autocomplete="new-password" minlength="6">
+              <span class="field-error" role="alert" style="display:none;color:var(--error);font-size:0.78rem;"></span>
+            </label>
+            <label class="auth-field">
+              <span>I'm primarily a…</span>
+              <select class="auth-input" name="persona" id="registerPersona">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+                <option value="tutor">Tutor</option>
+                <option value="self-learner">Self-Learner</option>
+              </select>
+            </label>
+            <button class="btn btn-primary" type="submit" style="width:100%;">Create account</button>
+          </form>
+          <div id="registerFeedback" class="small-feedback" role="alert"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/landing.js"></script>
+</body>
+</html>

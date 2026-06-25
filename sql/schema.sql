@@ -1,0 +1,65 @@
+CREATE DATABASE IF NOT EXISTS studymate;
+USE studymate;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(150) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS notes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    original_text LONGTEXT NOT NULL,
+    summary LONGTEXT NOT NULL,
+    explanation LONGTEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS app_users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(120) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS study_notes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title TEXT NOT NULL,
+    original_text LONGTEXT NOT NULL,
+    summary LONGTEXT NULL,
+    explanation LONGTEXT NULL,
+    quiz LONGTEXT NULL,
+    slides LONGTEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_study_notes_user FOREIGN KEY (user_id) REFERENCES app_users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS user_preferences (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    theme VARCHAR(40) DEFAULT 'light',
+    accent VARCHAR(40) DEFAULT 'blue',
+    card_style VARCHAR(40) DEFAULT 'soft',
+    persona VARCHAR(40) DEFAULT 'student',
+    summary_length VARCHAR(40) DEFAULT 'balanced',
+    explanation_style VARCHAR(40) DEFAULT 'clear',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_preferences_user FOREIGN KEY (user_id) REFERENCES app_users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS feedback (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    feature_type VARCHAR(40) NOT NULL,
+    original_text LONGTEXT NOT NULL,
+    ai_output LONGTEXT NOT NULL,
+    user_corrected_output LONGTEXT NULL,
+    rating INT NULL,
+    trusted BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_feedback_user FOREIGN KEY (user_id) REFERENCES app_users(id) ON DELETE SET NULL
+);

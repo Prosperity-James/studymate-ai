@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate AI — Slides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/product.css?v=4">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body class="dashboard-body accent-amber">
+<div class="dashboard-shell">
+
+  <button class="sidebar-backdrop" type="button" data-sidebar-close aria-label="Close navigation"></button>
+
+  <!-- ── Sidebar ── -->
+  <aside class="dashboard-sidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+      <div class="sidebar-top">
+        <a class="brand-lockup" href="/app/dashboard">
+          <span class="brand-badge" aria-hidden="true">S</span>
+          <div><span>StudyMate AI</span><span class="brand-name-sub">Premium Learner</span></div>
+        </a>
+        <button class="sidebar-close-btn" type="button" data-sidebar-close aria-label="Close navigation">&times;</button>
+      </div>
+    </div>
+    <div class="sidebar-new-summary">
+      <button class="btn-new-summary" onclick="window.location.href='/app/summarizer'" aria-label="Start a new summary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Summary
+      </button>
+    </div>
+    <div class="sidebar-nav-section">
+      <nav class="sidebar-nav" aria-label="App navigation">
+        <a href="/app/dashboard" aria-label="Dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a>
+        <a href="/app/summarizer" aria-label="Summarizer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h10"/></svg>
+          Summarizer
+        </a>
+        <a href="/app/explainer" aria-label="Explainer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          Explainer
+        </a>
+        <a href="/app/audio" aria-label="Audio">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+          Audio
+        </a>
+        <a href="/app/quiz" aria-label="Quiz">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Quiz
+        </a>
+        <a class="active" href="/app/slides" aria-current="page" aria-label="Slides">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Slides
+        </a>
+        <a href="/app/saved" aria-label="Saved Notes">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Saved Notes
+        </a>
+        <a href="/app/profile" aria-label="Profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
+        </a>
+      </nav>
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-user-avatar" id="profileAvatar" aria-hidden="true">S</div>
+      <div class="sidebar-user-info">
+        <span class="sidebar-user-name" id="profileName">StudyMate User</span>
+        <span class="sidebar-user-role">Premium Learner</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Top Bar ── -->
+  <header class="app-topbar">
+    <div class="app-topbar-left">
+      <button class="btn btn-ghost sidebar-toggle-btn" type="button" data-sidebar-open aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+      <span class="app-topbar-title">Slides</span>
+    </div>
+    <div class="app-topbar-right">
+      <span id="authState" class="status-badge" aria-live="polite">Account</span>
+      <a class="settings-entry" href="/app/profile" aria-label="Profile settings" title="Profile">&#9881;</a>
+      <button id="logoutBtn" class="btn btn-ghost" hidden>Logout</button>
+    </div>
+  </header>
+
+  <!-- ── Main: Slides Workspace ── -->
+  <main class="dashboard-main" aria-label="Slides workspace">
+
+    <!-- Input state — shown when no slides have been generated yet -->
+    <div id="inputState" class="panel-card">
+      <div class="panel-head">
+        <h2>Generate Slides</h2>
+      </div>
+      <textarea
+        id="noteText"
+        class="study-textarea"
+        placeholder="Paste your lecture notes, textbook pages, or reading material here to generate presentation slides…"
+        aria-label="Paste your notes here"
+      ></textarea>
+      <div class="action-row">
+        <input id="fileInput" type="file" accept="*/*" hidden aria-label="Upload file">
+        <button class="btn btn-ghost" id="uploadTriggerBtn" type="button" aria-label="Upload a file">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload
+        </button>
+        <button id="generateSlidesBtn" class="btn btn-primary" type="button">Generate Slides</button>
+      </div>
+      <div class="meta-row">
+        <span id="selectedFileName" class="meta-pill" hidden aria-live="polite"></span>
+      </div>
+    </div>
+
+    <!-- Presenter state — hidden until slides are generated; three-column layout -->
+    <div id="presenterState" class="slides-presenter" hidden aria-label="Slides presenter">
+
+      <!-- Left: Slide thumbnail list -->
+      <div class="slides-thumb-list" aria-label="Slide thumbnails">
+        <h3>Slides</h3>
+        <div id="slidesList" aria-live="polite" aria-label="Slide list"></div>
+      </div>
+
+      <!-- Center: Active slide canvas -->
+      <div class="slides-canvas panel-card" aria-label="Active slide canvas" aria-live="polite">
+        <h2 id="slideTitle">Slide Title</h2>
+        <ul id="slidePoints" class="result-list" aria-label="Slide bullet points"></ul>
+      </div>
+
+      <!-- Right: Presentation settings -->
+      <div class="slides-settings panel-card" aria-label="Presentation settings">
+        <h3>Presentation Settings</h3>
+        <div class="settings-grid">
+          <label class="settings-field">
+            <span>Slide Style</span>
+            <select id="slideStyleSelect" aria-label="Choose slide style">
+              <option value="default">Default</option>
+              <option value="minimal">Minimal</option>
+              <option value="bold">Bold</option>
+              <option value="academic">Academic</option>
+            </select>
+          </label>
+        </div>
+        <div class="action-row">
+          <button id="exportBtn" class="btn btn-primary" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+          <button id="toggleSettingsBtn" class="btn btn-ghost" type="button" aria-label="Toggle settings panel">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            Settings
+          </button>
+          <button id="saveSlidesBtn" class="btn btn-ghost" type="button">Save Session</button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <input type="hidden" id="noteTitle" value="">
+  <div id="feedback" class="global-feedback" hidden role="status" aria-live="polite"></div>
+  <div id="spinner" class="global-spinner" hidden role="status" aria-live="polite" aria-label="Loading">
+    <div class="spinner-ring" aria-hidden="true"></div>
+    <div id="spinnerStatus" class="spinner-status">Generating slides…</div>
+  </div>
+
+</div>
+<script src="/static/dashboard.js"></script>
+</body>
+</html>
