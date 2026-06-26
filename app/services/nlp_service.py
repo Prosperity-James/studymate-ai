@@ -54,21 +54,6 @@ class NLPService:
             return f"The text is too unclear to build a useful {purpose}."
         return None
 
-    def chunk_text(self, text, max_chars=800):
-        """Smaller chunks so flan-t5-small doesn't get overwhelmed."""
-        sentences = self.split_sentences(self.clean_study_text(text))
-        chunks, current, size = [], [], 0
-        for s in sentences:
-            if current and size + len(s) > max_chars:
-                chunks.append(" ".join(current))
-                current, size = [s], len(s)
-            else:
-                current.append(s)
-                size += len(s)
-        if current:
-            chunks.append(" ".join(current))
-        return chunks
-
     def select_key_sentences(self, text, limit=5):
         sentences = self.split_sentences(self.clean_study_text(text))
         filtered = [s for s in sentences if len(s.split()) >= 6]
@@ -152,18 +137,6 @@ class NLPService:
     #     except Exception:
     #         return ""
 
-    def _is_echo(self, output: str, prompt_fragment: str) -> bool:
-        """Detect if the model echoed the prompt instead of generating."""
-        if not output:
-            return True
-        # If output contains the instruction text, it's an echo
-        echo_markers = [
-            "write 5 to 7", "bullet points", "concise bullet",
-            "study assistant", "capture the key", "numbered points",
-        ]
-        lower = output.lower()
-        return any(m in lower for m in echo_markers)
-
     def _fallback_bullets(self, text, limit=5):
         """Extract key sentences directly — reliable fallback."""
         sentences = self.select_key_sentences(text, limit)
@@ -184,28 +157,37 @@ class NLPService:
 
         # Determine how many bullets to return
         instr = enhancement.personalization_instruction.lower()
-        target = 4 if "short" in instr else 7 if "detail" in instr else 5
+        target = 5 if "short" in instr else 9 if "detail" in instr else 7
+        depth_note = (
+            "Keep each point short and to the point." if "short" in instr else
+            "Go into real detail — each point should teach something, not just restate a phrase."
+            if "detail" in instr else
+            "Each point should be a complete, clear idea a student could revise from."
+        )
 
-        chunks = self.chunk_text(cleaned, max_chars=600)
-        all_bullets = []
+        extra = f"\n{enhancement.extra_instruction.strip()}" if enhancement.extra_instruction.strip() else ""
 
-        for chunk in chunks:
-            # T5-native format — short and direct
-            prompt = f"summarize: {chunk}"
-            raw = self._generate(prompt, max_new_tokens=150)
+        prompt = (
+            "You are a study assistant helping a student revise. Read the notes below and "
+            f"write {target} clear bullet points that summarize the key ideas. {depth_note} "
+            "Each bullet must be a full, well-formed sentence that makes sense on its own — "
+            "do not write fragments, single words, or vague restatements. Do not include any "
+            "preamble, headers, or numbering — just the bullet points, one per line, each "
+            f"starting with \"- \".{extra}\n\n"
+            f"Notes:\n{cleaned}\n\nSummary:"
+        )
+        raw = self._generate(prompt, max_new_tokens=900)
 
-            if raw and not self._is_echo(raw, chunk[:40]):
-                # Split on newlines or periods to get individual points
-                lines = re.split(r"(?<=[.!?])\s+|\n", raw)
-                lines = [re.sub(r"^[-*\d.]+\s*", "", l).strip() for l in lines]
-                lines = [l for l in lines if len(l.split()) >= 4]
-                all_bullets.extend(lines if lines else [raw])
-            else:
-                # Fallback: extract key sentences directly
-                all_bullets.extend(self._fallback_bullets(chunk, limit=2))
+        if raw:
+            lines = [l.strip() for l in raw.split("\n")]
+            lines = [re.sub(r"^[-*•\d.)]+\s*", "", l).strip() for l in lines]
+            lines = [l for l in lines if len(l.split()) >= 4]
+            bullets = self.deduplicate_lines(lines)
+            if bullets:
+                return bullets[:target]
 
-        bullets = self.deduplicate_lines(all_bullets)
-        return bullets[:target] or self._fallback_bullets(cleaned, target)
+        # Fallback: extract key sentences directly if the model call failed
+        return self._fallback_bullets(cleaned, target)
 
     # ── Explain ───────────────────────────────────────────────────────
 
@@ -218,30 +200,43 @@ class NLPService:
         keywords = self.extract_keywords(cleaned)
         enhancement = enhancement or PromptEnhancement([], "", "")
 
-        depth_prefix = {
-            "basic":        "explain simply:",
-            "intermediate": "explain:",
-            "advanced":     "explain in detail:",
-        }.get(mode, "explain:")
+        depth_instruction = {
+            "basic": (
+                "Explain it like you're teaching a complete beginner. Use simple words, short "
+                "sentences, and a real-world analogy if it helps. Avoid jargon — if you must use "
+                "a technical term, explain what it means right after."
+            ),
+            "intermediate": (
+                "Explain it clearly for a student who already knows the basics. Cover the how "
+                "and why, not just the what, and connect ideas together."
+            ),
+            "advanced": (
+                "Explain it in depth, as for someone preparing for an exam. Cover mechanisms, "
+                "reasoning, and nuance, and call out any common misconceptions."
+            ),
+        }.get(mode, "Explain it clearly.")
 
-        # Process in chunks, collect explanations
-        chunks = self.chunk_text(cleaned, max_chars=600)
-        all_lines = []
+        extra = f"\n{enhancement.extra_instruction.strip()}" if enhancement.extra_instruction.strip() else ""
 
-        for chunk in chunks:
-            prompt = f"{depth_prefix} {chunk}"
-            raw = self._generate(prompt, max_new_tokens=180)
+        prompt = (
+            "You are a study assistant helping a student understand their notes. Read the "
+            f"notes below and write a thorough explanation. {depth_instruction} Write in full "
+            "sentences and organize the explanation into a few short paragraphs or clearly "
+            "labeled points — do not just list disconnected fragments. Do not include any "
+            f"preamble like \"Sure, here's...\" — just give the explanation directly.{extra}\n\n"
+            f"Notes:\n{cleaned}\n\nExplanation:"
+        )
+        raw = self._generate(prompt, max_new_tokens=1100)
 
-            if raw and not self._is_echo(raw, chunk[:40]):
-                lines = re.split(r"(?<=[.!?])\s+|\n", raw)
-                lines = [re.sub(r"^\d+[.)]\s*", "", l).strip() for l in lines]
-                lines = [l for l in lines if len(l.split()) >= 4]
-                all_lines.extend(lines if lines else [raw])
-            else:
-                all_lines.extend(self._fallback_bullets(chunk, limit=2))
+        if raw:
+            lines = [l.strip() for l in raw.split("\n") if l.strip()]
+            lines = [re.sub(r"^[-*•\d.)]+\s*", "", l).strip() for l in lines]
+            lines = [l for l in lines if len(l.split()) >= 3]
+            result = self.deduplicate_lines(lines)
+            if result:
+                return result, keywords
 
-        result = self.deduplicate_lines(all_lines)
-        return result[:6] or self._fallback_bullets(cleaned, 5), keywords
+        return self._fallback_bullets(cleaned, 5), keywords
 
     # ── Quiz & Slides (no model needed — use extraction) ─────────────
 

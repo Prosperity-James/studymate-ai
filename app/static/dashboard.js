@@ -832,7 +832,20 @@ const stabilityReadout  = document.getElementById("stabilityReadout");
 const similaritySlider  = document.getElementById("similaritySlider");
 const similarityReadout = document.getElementById("similarityReadout");
 const ttsModeNote       = document.getElementById("ttsModeNote");
-const elevenAudioPlayer = document.getElementById("elevenAudioPlayer");
+// The <audio> element only exists in app_audio.html's markup. Other pages
+// (Explainer, Summarizer, Dashboard chat) also call speakText(), so create
+// one lazily here if the page doesn't already provide it.
+function getElevenAudioPlayer() {
+  let el = document.getElementById("elevenAudioPlayer");
+  if (!el) {
+    el = document.createElement("audio");
+    el.id = "elevenAudioPlayer";
+    el.style.display = "none";
+    document.body.appendChild(el);
+  }
+  return el;
+}
+const elevenAudioPlayer = getElevenAudioPlayer();
 
 let speechUtterance = null;
 let ttsConfigured = false;   // true once we confirm an ElevenLabs key is set server-side
@@ -903,6 +916,7 @@ if (typeof speechSynthesis !== "undefined") {
 loadTtsVoices();
 
 function showAudioStatus(show) {
+  showGlobalAudioBar(show);
   if (!audioStatus) return;
   audioStatus.style.display = show ? "" : "none";
   audioStatus.hidden = !show;
@@ -948,8 +962,38 @@ async function speakWithElevenLabs(text) {
   elevenAudioPlayer.src = url;
   elevenAudioPlayer.onplay  = () => showAudioStatus(true);
   elevenAudioPlayer.onended = () => showAudioStatus(false);
-  elevenAudioPlayer.onpause = () => showAudioStatus(false);
+  // Don't hide on pause — the floating bar should stay visible so the user can resume.
   await elevenAudioPlayer.play();
+}
+
+// ── Floating playback bar — shown on pages with no dedicated Play/Pause/Stop UI ──
+let globalAudioBar = null;
+
+function getGlobalAudioBar() {
+  if (globalAudioBar) return globalAudioBar;
+  const bar = document.createElement("div");
+  bar.id = "globalAudioBar";
+  bar.className = "global-audio-bar";
+  bar.innerHTML = `
+    <span class="label">Listening…</span>
+    <button type="button" id="globalPauseBtn" aria-label="Pause or resume">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+    </button>
+    <button type="button" id="globalStopBtn" aria-label="Stop">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+    </button>`;
+  document.body.appendChild(bar);
+  bar.querySelector("#globalPauseBtn").addEventListener("click", togglePauseAudio);
+  bar.querySelector("#globalStopBtn").addEventListener("click", stopAudio);
+  globalAudioBar = bar;
+  return bar;
+}
+
+function showGlobalAudioBar(show) {
+  // Pages that already have dedicated Play/Pause/Stop controls (the Audio page)
+  // don't need the floating bar too.
+  if (playAudioBtn) return;
+  getGlobalAudioBar().classList.toggle("visible", show);
 }
 
 // Core TTS function used across pages (dashboard "Listen", summarizer/explainer toolbox, audio page)
@@ -972,7 +1016,7 @@ playAudioBtn?.addEventListener("click", () => {
   speakText(text);
 });
 
-pauseAudioBtn?.addEventListener("click", () => {
+function togglePauseAudio() {
   if (elevenAudioPlayer && !elevenAudioPlayer.paused && elevenAudioPlayer.src) {
     elevenAudioPlayer.pause();
     return;
@@ -987,16 +1031,20 @@ pauseAudioBtn?.addEventListener("click", () => {
   } else if (speechSynthesis.paused) {
     speechSynthesis.resume();
   }
-});
+}
 
-stopAudioBtn?.addEventListener("click", () => {
+function stopAudio() {
   if (elevenAudioPlayer) {
     elevenAudioPlayer.pause();
     elevenAudioPlayer.currentTime = 0;
   }
   if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
   showAudioStatus(false);
-});
+  showGlobalAudioBar(false);
+}
+
+pauseAudioBtn?.addEventListener("click", togglePauseAudio);
+stopAudioBtn?.addEventListener("click", stopAudio);
 
 // Monitor speaking state to keep status indicator in sync (browser-voice path only)
 function pollAudioStatus() {
@@ -1149,6 +1197,73 @@ sendBtn?.addEventListener("click", async () => {
   }
 })();
 
+// Restore a previously saved session when "View Session" is clicked from
+// the dashboard or Saved Notes page — renders the stored output directly
+// instead of re-calling the AI, so the page is never left blank.
+(function restoreViewedNote() {
+  const raw = sessionStorage.getItem("studymate-view-note");
+  if (!raw) return;
+  sessionStorage.removeItem("studymate-view-note");
+
+  let note;
+  try { note = JSON.parse(raw); } catch { return; }
+
+  const path = window.location.pathname;
+
+  if (noteTitle) noteTitle.value = note.title || "";
+
+  if (path.includes("summarizer")) {
+    const target = document.getElementById("noteText");
+    if (target) { target.value = note.original_text || ""; autoResize(target); updateMetrics(); }
+    if (note.summary) {
+      currentSummary = note.summary.split("\n").filter(Boolean);
+      renderSummary(currentSummary);
+      showFeedback("Loaded saved summary.");
+    }
+  } else if (path.includes("explainer")) {
+    const target = document.getElementById("noteText");
+    if (target) { target.value = note.original_text || ""; autoResize(target); updateMetrics(); }
+    if (note.explanation) {
+      currentExplanation = note.explanation.split("\n").filter(Boolean);
+      renderExplanation(currentExplanation);
+      showFeedback("Loaded saved explanation.");
+    }
+  } else if (path.includes("quiz")) {
+    const target = document.getElementById("noteText");
+    if (target) target.value = note.original_text || "";
+    if (note.quiz) {
+      try {
+        quizQuestions = JSON.parse(note.quiz) || [];
+        if (quizQuestions.length) {
+          quizIndex = quizCorrect = quizIncorrect = quizStreak = 0;
+          updateQuizStats();
+          if (inputCard)      { inputCard.style.display = "none"; inputCard.hidden = true; }
+          if (completionCard) { completionCard.style.display = "none"; }
+          if (questionCard)   { questionCard.style.display = ""; questionCard.hidden = false; }
+          showQuizQuestion(0);
+          showFeedback("Loaded saved quiz.");
+        }
+      } catch { /* malformed saved quiz */ }
+    }
+  } else if (path.includes("slides")) {
+    const target = document.getElementById("noteText");
+    if (target) target.value = note.original_text || "";
+    if (note.slides) {
+      try {
+        slidesData = JSON.parse(note.slides) || [];
+        currentSlides = slidesData;
+        if (slidesData.length) {
+          if (inputState)     { inputState.style.display = "none"; inputState.hidden = true; }
+          if (presenterState) { presenterState.style.display = ""; presenterState.hidden = false; }
+          renderSlidesList(slidesData);
+          activateSlide(0);
+          showFeedback("Loaded saved slides.");
+        }
+      } catch { /* malformed saved slides */ }
+    }
+  }
+})();
+
 // ── Dashboard: recent sessions grid ──────────────────────────────────────────
 const sessionsGrid = document.getElementById("sessionsGrid");
 
@@ -1173,8 +1288,14 @@ function buildSessionCard(note) {
     <p class="small-feedback">${dateStr}</p>
     <p class="panel-copy">${preview}${preview.length >= 140 ? "…" : ""}</p>
     <div class="card-hover-action">
-      <a class="btn btn-primary" href="${toolHref}" aria-label="View session: ${note.title || 'Untitled'}">View Session</a>
+      <button type="button" class="btn btn-primary view-session-btn" aria-label="View session: ${note.title || 'Untitled'}">View Session</button>
     </div>`;
+  article.querySelector(".view-session-btn")?.addEventListener("click", () => {
+    try {
+      sessionStorage.setItem("studymate-view-note", JSON.stringify(note));
+    } catch { /* storage unavailable */ }
+    window.location.href = toolHref;
+  });
   return article;
 }
 
