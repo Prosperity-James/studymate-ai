@@ -1,7 +1,13 @@
 """
-Entry point for cPanel's "Setup Python App" (Phusion Passenger).
-Passenger 6+ supports ASGI apps directly — it detects that `application`
-is an ASGI callable (not a WSGI one) and serves it accordingly, no adapter
-needed for FastAPI.
+Entry point for cPanel's "Setup Python App" (Phusion Passenger / LSAPI).
+
+Many shared-hosting Passenger setups (especially under LiteSpeed) only
+reliably support WSGI, not raw ASGI — handing them an ASGI app directly
+causes "Incomplete response received from application" errors. Wrapping
+with a2wsgi's ASGIMiddleware makes the FastAPI app speak WSGI instead.
 """
-from app.main import app as application
+from a2wsgi import ASGIMiddleware
+
+from app.main import app as _fastapi_app
+
+application = ASGIMiddleware(_fastapi_app)

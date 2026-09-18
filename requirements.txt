@@ -7,6 +7,7 @@ python-dotenv==1.1.1
 requests==2.32.3
 pypdf==5.9.0
 jinja2==3.1.6
+a2wsgi==1.10.7
 
 # Old local-model backend (flan-t5-small), replaced by the DeepSeek API.
 # transformers==4.55.4
